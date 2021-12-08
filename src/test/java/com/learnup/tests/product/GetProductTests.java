@@ -1,4 +1,4 @@
-package com.learnup.tests;
+package com.learnup.tests.product;
 
 import org.junit.jupiter.api.Test;
 
