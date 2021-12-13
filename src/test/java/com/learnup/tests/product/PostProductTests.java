@@ -4,6 +4,11 @@ import com.github.javafaker.Faker;
 import com.learnup.asserts.CommonAsserts;
 import com.learnup.dto.Product;
 import com.learnup.tests.BaseTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -23,7 +28,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
+@Epic("Tests for product")
+@Story("Post Product tests")
+@Severity(SeverityLevel.CRITICAL)
 public class PostProductTests extends BaseTest {
     Faker faker = new Faker();
     Product product;

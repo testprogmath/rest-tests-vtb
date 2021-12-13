@@ -1,6 +1,7 @@
 package com.learnup.asserts;
 
 import com.learnup.dto.Product;
+import io.qameta.allure.Step;
 import lombok.experimental.UtilityClass;
 import org.hamcrest.CoreMatchers;
 
@@ -12,6 +13,7 @@ import static org.hamcrest.Matchers.nullValue;
 @UtilityClass
 public class CommonAsserts {
 
+    @Step
     public Integer postProductPositiveAssert(Product product, Product response) {
         Integer id = response.getId();
         assertThat(id, CoreMatchers.is(not(nullValue())));
