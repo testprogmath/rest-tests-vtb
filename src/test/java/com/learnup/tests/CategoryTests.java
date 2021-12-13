@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import static com.learnup.Endpoints.CATEGORY_ENDPOINT;
+import static com.learnup.asserts.IsCategoryExists.isCategoryExists;
 import static com.learnup.enums.CategoryType.FURNITURE;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -70,8 +71,34 @@ public class CategoryTests extends BaseTest {
                         .prettyPeek()
                         .body()
                         .as(Category.class);
+
         response.getProducts().forEach(
-                e -> assertThat(e.getCategoryTitle(), equalTo(FURNITURE.getName()))
+                e -> {
+                    assertThat(e.getCategoryTitle(), isCategoryExists());
+                    assertThat(e.getCategoryTitle(), equalTo(FURNITURE.getName()));
+                }
+        );
+        assertThat(response.getTitle(), equalTo(FURNITURE.getName()));
+        assertThat(response.getId(), equalTo(FURNITURE.getId()));
+    }
+
+    @Test
+    void getCategoryWithAssertsAfterTestTest() {
+        Category response =
+                given()
+                        .response()
+                        .spec(categoriesResponseSpec)
+                        . when()
+                        .get(CATEGORY_ENDPOINT,888)
+                        .prettyPeek()
+                        .body()
+                        .as(Category.class);
+
+        response.getProducts().forEach(
+                e -> {
+                    assertThat(e.getCategoryTitle(), isCategoryExists());
+                    assertThat(e.getCategoryTitle(), equalTo(FURNITURE.getName()));
+                }
         );
         assertThat(response.getTitle(), equalTo(FURNITURE.getName()));
         assertThat(response.getId(), equalTo(FURNITURE.getId()));

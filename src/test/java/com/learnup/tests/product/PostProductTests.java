@@ -1,6 +1,7 @@
 package com.learnup.tests.product;
 
 import com.github.javafaker.Faker;
+import com.learnup.asserts.CommonAsserts;
 import com.learnup.dto.Product;
 import com.learnup.tests.BaseTest;
 import io.restassured.builder.RequestSpecBuilder;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.learnup.Endpoints.POST_PRODUCT_ENDPOINT;
 import static com.learnup.Endpoints.PRODUCT_ID_ENDPOINT;
+import static com.learnup.asserts.CommonAsserts.postProductPositiveAssert;
 import static com.learnup.enums.CategoryType.FURNITURE;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -67,11 +69,7 @@ public class PostProductTests extends BaseTest {
                 .prettyPeek()
                 .body()
                 .as(Product.class);
-        id = response.getId();
-        assertThat(id, is(not(nullValue())));
-        assertThat(response.getCategoryTitle(), equalTo(product.getCategoryTitle()));
-        assertThat(response.getTitle(), equalTo(product.getTitle()));
-        assertThat(response.getPrice(), equalTo(product.getPrice()));
+        postProductPositiveAssert(product, response);
     }
 
     @AfterEach

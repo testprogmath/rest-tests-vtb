@@ -16,19 +16,18 @@ import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.HEADERS;
 import static io.restassured.filter.log.LogDetail.METHOD;
 import static io.restassured.filter.log.LogDetail.URI;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.lessThan;
 
 public abstract class BaseTest {
-
-
-
-
 
     static Properties properties = new Properties();
     static RequestSpecification logRequestSpecification;
     static ResponseSpecification responseSpecification;
     public static ResponseSpecification deleteResponseSpec;
     static ResponseSpecification categoriesResponseSpec;
+
     @SneakyThrows
     @BeforeAll
     static void beforeAll() {
@@ -46,10 +45,10 @@ public abstract class BaseTest {
                 .expectResponseTime(lessThan(900L), TimeUnit.MILLISECONDS)
                 .build();
 
-        categoriesResponseSpec =  new ResponseSpecBuilder()
-                                .expectContentType(ContentType.JSON)
-                                .expectStatusCode(200)
-                                .expectStatusLine("HTTP/1.1 200")
+        categoriesResponseSpec = new ResponseSpecBuilder()
+                .expectContentType(ContentType.JSON)
+                .expectStatusCode(200)
+                .expectStatusLine(containsStringIgnoringCase("HTTP/1.1 200"))
                 .build();
         deleteResponseSpec = new ResponseSpecBuilder()
                 .expectContentType("")
