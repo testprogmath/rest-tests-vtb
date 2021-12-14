@@ -17,7 +17,6 @@ public class CommonAsserts {
     public Integer postProductPositiveAssert(Product product, Product response) {
         Integer id = response.getId();
         assertThat(id, CoreMatchers.is(not(nullValue())));
-        assertThat(response.getCategoryTitle(), isCategoryExists());
         assertThat(response.getCategoryTitle(), equalTo(product.getCategoryTitle()));
         assertThat(response.getTitle(), equalTo(product.getTitle()));
         assertThat(response.getPrice(), equalTo(product.getPrice()));

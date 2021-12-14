@@ -1,6 +1,9 @@
 package com.learnup.tests;
 
 import com.google.common.collect.ImmutableMap;
+import com.learnup.db.dao.CategoriesMapper;
+import com.learnup.db.dao.ProductsMapper;
+import com.learnup.utils.DbUtils;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -9,6 +12,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import lombok.SneakyThrows;
@@ -30,11 +34,12 @@ public abstract class BaseTest {
     static ResponseSpecification responseSpecification;
     public static ResponseSpecification deleteResponseSpec;
     static ResponseSpecification categoriesResponseSpec;
+    public static ProductsMapper productsMapper;
+    public static CategoriesMapper categoriesMapper;
 
     @SneakyThrows
     @BeforeAll
     static void beforeAll() {
-
 
         RestAssured.filters(new AllureRestAssured());
         properties.load(new FileInputStream("src/test/resources/application.properties"));
@@ -63,12 +68,15 @@ public abstract class BaseTest {
                 .build();
         RestAssured.requestSpecification = logRequestSpecification;
         RestAssured.responseSpecification = responseSpecification;
+
+        categoriesMapper = DbUtils.getCategoryMapper();
+        productsMapper = DbUtils.getProductsMapper();
     }
 
     protected static void setAllureEnvironment() {
         allureEnvironmentWriter(
                 ImmutableMap.<String, String>builder()
-                        .put("URL",properties.getProperty("baseURL"))
+                        .put("URL", properties.getProperty("baseURL"))
                         .build());
     }
 }

@@ -16,11 +16,13 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.learnup.Endpoints.POST_PRODUCT_ENDPOINT;
 import static com.learnup.Endpoints.PRODUCT_ID_ENDPOINT;
 import static com.learnup.asserts.CommonAsserts.postProductPositiveAssert;
+import static com.learnup.enums.CategoryType.FOOD;
 import static com.learnup.enums.CategoryType.FURNITURE;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -28,6 +30,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 @Epic("Tests for product")
 @Story("Post Product tests")
 @Severity(SeverityLevel.CRITICAL)
@@ -43,7 +46,7 @@ public class PostProductTests extends BaseTest {
         product = Product.builder()
                 .price(100)
                 .title(faker.food().dish())
-                .categoryTitle(FURNITURE.getName())
+                .categoryTitle(FOOD.getName())
                 .build();
 
         postProductRequestSpec = new RequestSpecBuilder()
@@ -81,13 +84,16 @@ public class PostProductTests extends BaseTest {
 
     @AfterEach
     void tearDown() {
-        given()
-                .response()
-                .spec(deleteResponseSpec)
-                .when()
-                .delete(PRODUCT_ID_ENDPOINT, id)
-                .prettyPeek()
-                .then()
-                .statusCode(200);
+        if (id != null) {
+            //переписать с использованием базы
+            given()
+                    .response()
+                    .spec(deleteResponseSpec)
+                    .when()
+                    .delete(PRODUCT_ID_ENDPOINT, id)
+                    .prettyPeek()
+                    .then()
+                    .statusCode(200);
+        }
     }
 }
